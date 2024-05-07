@@ -19,9 +19,9 @@ import androidx.compose.ui.window.application
 @Composable
 @Preview
 fun App() {
-    var login by remember { mutableStateOf("log") }
-    var password by remember { mutableStateOf("pass") }
-    var text by remember { mutableStateOf<String?>(null) }
+    var login by remember { mutableStateOf("login") }
+    var password by remember { mutableStateOf("password") }
+    var response_serv by remember { mutableStateOf<String?>(null) }
     var client = Client_my()
 
     MaterialTheme {
@@ -39,23 +39,28 @@ fun App() {
             Row{
                 Button(onClick = {
                     client.start()
-                    client.send("2")
+                    client.send("login")
                     client.send(login)
                     client.send(password)
-                    text = client.get()
+                    response_serv = client.get()
                     client.finish()
                 }) {
                     Text("Войти")
                 }
                 Button(onClick = {
-                    print(2)
+                    client.start()
+                    client.send("registration")
+                    client.send(login)
+                    client.send(password)
+                    response_serv = client.get()
+                    client.finish()
                 }) {
                     Text("Регистрация")
                 }
             }
             Row {
-                if (text != null)
-                    Text(text!!)
+                if (response_serv != null)
+                    Text(response_serv!!)
                 else{
                     Text("empty text")
                 }

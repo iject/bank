@@ -1,6 +1,4 @@
 import java.sql.DriverManager
-import java.sql.PreparedStatement
-
 
 class Database(){
     val user = "root"
@@ -65,7 +63,14 @@ class Database(){
         }
     }
 
-    fun insert(id: Int, login: String, password: String, balance: Int){
+    fun count_rows(): Int{
+        var resultSet = statement.executeQuery("SELECT COUNT(id) FROM user")
+
+        resultSet.next()
+        return resultSet.getInt(1)
+    }
+
+    fun insert(id: Int, login: String, password: String, balance: Int = 100){
         try{
             /*statement.executeQuery("INSERT INTO bank (id, login, password, balance)" +
                     " VALUES (" + id + "," + login + "," + password + "," + balance + ");")*/
