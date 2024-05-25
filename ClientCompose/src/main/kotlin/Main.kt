@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
+import kotlin.system.exitProcess
 
 @Composable
 @Preview
@@ -22,6 +23,7 @@ fun App() {
     var login by remember { mutableStateOf("login") }
     var password by remember { mutableStateOf("password") }
     var response_serv by remember { mutableStateOf<String?>(null) }
+    var windowFlag by remember { mutableStateOf(false) }
     var client = Client_my()
 
     MaterialTheme {
@@ -59,10 +61,31 @@ fun App() {
                 }
             }
             Row {
-                if (response_serv != null)
-                    Text(response_serv!!)
+                if (response_serv != null){
+                    if (response_serv!!.contains("Вход выполнен")){
+                        windowFlag = true
+                    }
+                    else Text(response_serv!!)
+                }
+
                 else{
                     Text("empty text")
+                }
+            }
+        }
+        if (windowFlag) {
+            Window(onCloseRequest = {
+                windowFlag = false
+                response_serv = null
+            }) {
+                Row {
+                    Text(response_serv!!)
+                    Button(onClick = {
+                        windowFlag = false
+                        response_serv = null
+                    }){
+                        Text("Exit")
+                    }
                 }
             }
         }
